@@ -1,2 +1,2 @@
 # playground
-Just a programming languages and frameworks playground 
+This is the place where I play with design and code.
