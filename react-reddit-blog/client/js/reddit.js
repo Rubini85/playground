@@ -34,7 +34,7 @@ var SinglePost = React.createClass({
     render: function() {
         return (
             <div className = "single-post">
-                <VoteBox upvotes={this.props.post.upvotes} downvotes={this.props.post.downvotes} />
+                <VoteBox initialUpvotes={this.props.post.upvotes} initialDownvotes={this.props.post.downvotes} />
                 <ArticleBox image={this.props.post.image} title={this.props.post.title} nsfw={this.props.post.nsfw} url={this.props.post.url} />
             </div>
         )
@@ -42,13 +42,45 @@ var SinglePost = React.createClass({
 });
 
 var VoteBox = React.createClass({
+    // Setting the initial state of component to 0 (no vote)
+    getInitialState: function() {
+      return {vote: 0};
+    },
+
+    // Upvote state is set to 1
+    handleUpvote: function() {
+        if (this.state.vote === 0) {
+            this.setState({vote: 1});
+        } else if (this.state.vote === 1) {
+            this.setState({vote: 0});
+        } else if (this.state.vote === -1) {
+            this.setState({vote: 1});
+        }
+    },
+
+    // Downvote state is set to -1
+    handleDownvote: function() {
+        if (this.state.vote === 0) {
+            this.setState({vote: -1});
+        } else if (this.state.vote === -1) {
+            this.setState({vote: 0});
+        } else if (this.state.vote === 1) {
+            this.setState({vote: -1});
+        }
+    },
+
    render: function() {
-       var votes = this.props.upvotes - this.props.downvotes;
+       var score = this.props.initialUpvotes - this.props.initialDownvotes;
+       // React calculates every time the score based on state:
+       // if state goes from 0 to 1 (or -1), React calculates score + 1 (or -1), that is this.props.initialUpvotes - this.props.initialDownvotes + 1 (or -1);
+       // if state goes from 1 (or -1) to 0, React calculates score + 0.
+       score += this.state.vote;
+
        return (
            <div className = "vote-container">
-               <span>Up</span>
-               <span>{votes}</span>
-               <span>Down</span>
+               <span onClick={this.handleUpvote}>Up</span>
+               <span>{score}</span>
+               <span onClick={this.handleDownvote}>Down</span>
            </div>
        )
    }
