@@ -11,12 +11,20 @@ body {
     display: flex;
     height: 52px;
     justify-content: space-between;
-    margin: 75px auto 0;
+    margin: auto;
     width: 1150px;
+}
+
+.task-item:first-child {
+    margin-top: 75px;
 }
 
 .task-item > * {
     position: relative;
+}
+
+.task-name {
+    width: 175px;
 }
 
 .task-project {
@@ -38,9 +46,9 @@ body {
 
 .task-time-elapsed {
     font-weight: 600;
-    left: 30%;
+    left: 275px;
 }
 
 .task-time-from {
-    left: 17%;
+    left: 275px;
 }

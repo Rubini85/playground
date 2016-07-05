@@ -1,11 +1,20 @@
 // create an object which simulates data from back end
-var taskData = {
-    "id": 1,
-    "project": "Evonove website",
-    "description": "front end development",
-    "from_date": "09:45",
-    "to_date": "12:32"
-};
+var taskData = [
+    {
+        "id": 1,
+        "project": "Evonove website",
+        "description": "front end development",
+        "from_date": "9:45 AM",
+        "to_date": "12:32 PM"
+    },
+    {
+        "id": 2,
+        "project": "Dispensa website",
+        "description": "Mockup",
+        "from_date": "2:45 PM",
+        "to_date": "6:32 PM"
+    }
+];
 
 var Reaggle = React.createClass({
    render: function() {
@@ -33,9 +42,15 @@ var TaskForm = React.createClass({
 
 var TaskList = React.createClass({
    render: function() {
+       var taskNodes = this.props.data.map(function(task) {
+           return (
+               <TaskItem key={task.id} project={task.project} description={task.description} from_date={task.from_date} to_date={task.to_date} />
+           )
+       });
+
        return (
            <div className = "task-list">
-               <TaskItem project={this.props.data.project} description={this.props.data.description} from_date={this.props.data.from_date} to_date={this.props.data.to_date} />
+               {taskNodes}
            </div>
        )
    }
