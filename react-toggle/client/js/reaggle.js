@@ -21,7 +21,7 @@ var Reaggle = React.createClass({
        return (
            <div className = "reaggle">
                <TaskForm />
-               <TaskList />
+               <TaskList data={taskData}/>
            </div>
        )
    }
@@ -32,9 +32,12 @@ var TaskForm = React.createClass({
        return (
            <form className = "task-form">
                <input className = "task-name"></input>
-               <span className = "task-project">Project</span>
-               <span className = "task-timer">Timer</span>
-               <span className = "task-button">Start</span>
+               <div className = "task-elements">
+                   <span className = "task-project">Project</span>
+                   <span className = "task-billable">$</span>
+                   <span className = "task-timer">Timer</span>
+                   <span className = "task-button">Start</span>
+               </div>
            </form>
        )
    }
@@ -60,17 +63,24 @@ var TaskItem = React.createClass({
     render: function() {
         return (
             <div className = "task-item">
-                <span className = "task-name">{this.props.description}</span>
-                <span className = "task-project">{this.props.project}</span>
-                <span className = "task-time-elapsed">3:00</span>
-                <span className = "task-time-from">{this.props.from_date}</span>
-                <span className = "task-time-to">{this.props.to_date}</span>
+                <div className = "task-name">
+                    <span className = "task-name">{this.props.description}</span>
+                    <span className = "task-project">{this.props.project}</span>
+                </div>
+                <div className = "task-time">
+                    <span className = "task-time-elapsed">3:00</span>
+                    <div className = "task-time-from-to">
+                        <span className = "task-time-from">{this.props.from_date}</span>
+                        <span> - </span>
+                        <span className = "task-time-to">{this.props.to_date}</span>
+                    </div>
+                </div>
             </div>
         )
     }
 });
 
 ReactDOM.render(
-    <TaskList data={taskData} />,
+    <Reaggle />,
     document.getElementById('main')
 );
