@@ -51,11 +51,16 @@ body {
 .task-button {
     background: #45b900;
     color: white;
+    cursor: pointer;
     font-size: 18px;
     height: 52px;
     line-height: 52px;
     text-align: center;
     width: 190px;
+}
+
+.task-button.is-start {
+    background: #ec0000;
 }
 
 .task-item:first-child {
