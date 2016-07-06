@@ -1,62 +1,100 @@
-// create an object which simulates data from back end
-var taskData = [
-    {
-        "id": 1,
-        "project": "Evonove website",
-        "description": "front end development",
-        "from_date": "9:45 AM",
-        "to_date": "12:32 PM"
-    },
-    {
-        "id": 2,
-        "project": "Dispensa website",
-        "description": "Mockup",
-        "from_date": "2:45 PM",
-        "to_date": "6:32 PM"
-    }
-];
-
 var Reaggle = React.createClass({
+    getInitialState: function() {
+        return {data: []}
+    },
+
+    componentDidMount: function() {
+        this.setState({data: [
+            {
+                id: 1,
+                project: "Evonove website",
+                description: "front end development",
+                from_date: "9:45 AM",
+                to_date: "12:32 PM"
+            },
+            {
+                id: 2,
+                project: "Dispensa website",
+                description: "Mockup",
+                from_date: "2:45 PM",
+                to_date: "6:32 PM"
+            }
+        ]});
+    },
+
+    formData: function(newTask) {
+        this.setState({data: this.state.data.concat(newTask)});
+    },
+
    render: function() {
        return (
            <div className = "reaggle">
-               <TaskForm />
-               <TaskList data={taskData}/>
+               <TaskForm formData={this.formData}/>
+               <TaskList data={this.state.data}/>
            </div>
        )
    }
 });
 
 var TaskForm = React.createClass({
-    // Setting the initial state: timer is not started
     getInitialState: function() {
-        return {click: false, seconds: 0, timer: null};
+        return {click: false, seconds: 0, timer: null, project: "", description: "", billable: false, from_date: "", to_date: ""};
     },
 
     handleClick: function() {
         if (this.state.click) {
-            this.setState({click: false});
+            var toDate = new Date();
+            var task = {
+                // setting timestamp as ID to avoid clashes with other IDs
+                id: new Date(),
+                description: this.state.description,
+                project: this.state.project,
+                billable: this.state.billable,
+                from_date: this.state.from_date.toString(),
+                to_date: toDate.toString()
+            };
             clearInterval(this.state.timer);
+            this.props.formData(task);
+            // Resetting all values
+            this.setState(this.getInitialState());
         } else {
             var timerID = setInterval(function() {this.setState({seconds: this.state.seconds +1})}.bind(this), 1000);
-            this.setState({click: true, timer: timerID});
+            this.setState({click: true, timer: timerID, from_date: new Date()});
         }
     },
 
+    handleProjectChange: function(event) {
+        this.setState({project: event.target.value});
+    },
+
+    handleDescriptionChange: function(event) {
+        this.setState({description: event.target.value});
+    },
+
+    handleBillable: function() {
+        this.setState({billable: !this.state.billable});
+    },
+
    render: function() {
+       var billableClass = "task-billable";
        var buttonClass = "task-button";
        var buttonText = "Start";
+
        if (this.state.click) {
            buttonClass += " is-start";
            buttonText = "Stop";
        }
 
+       if(this.state.billable) {
+           billableClass += " is-select";
+       }
+
        return (
            <form className = "task-form">
-               <input className = "task-name" type="text"></input>
+               <input className = "task-name" type="text" value={this.state.description} onChange={this.handleDescriptionChange}></input>
                <div className = "task-elements">
-                   <input className = "task-project" type="text"></input>
-                   <span className = "task-billable">$</span>
+                   <input className = "task-project" type="text" value={this.state.project} onChange={this.handleProjectChange}></input>
+                   <span className = {billableClass} onClick={this.handleBillable}>$</span>
                    <span className = "task-timer">{this.state.seconds} sec</span>
                    <span className = {buttonClass} onClick={this.handleClick}>{buttonText}</span>
                </div>
