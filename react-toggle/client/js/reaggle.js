@@ -23,14 +23,27 @@ var Reaggle = React.createClass({
     },
 
     formData: function(newTask) {
+        // Add a new Task-item to the array of tasks (data state)
         this.setState({data: this.state.data.concat(newTask)});
+    },
+
+    deleteData: function(deleteThis) {
+        var newData = this.state.data;
+        var index = this.state.data.findIndex(function(element) {
+            if (element.id === deleteThis) {
+                return true;
+            }
+        });
+
+        newData.splice(index, 1);
+        this.setState({data: newData});
     },
 
    render: function() {
        return (
            <div className = "reaggle">
-               <TaskForm formData={this.formData}/>
-               <TaskList data={this.state.data}/>
+               <TaskForm formData={this.formData} />
+               <TaskList data={this.state.data} deleteTask={this.deleteData} />
            </div>
        )
    }
@@ -54,8 +67,9 @@ var TaskForm = React.createClass({
                 to_date: toDate.toString()
             };
             clearInterval(this.state.timer);
+            // Child sends data of the new task to its parent
             this.props.formData(task);
-            // Resetting all values
+            // Reset all values after new task is created
             this.setState(this.getInitialState());
         } else {
             var timerID = setInterval(function() {this.setState({seconds: this.state.seconds +1})}.bind(this), 1000);
@@ -107,9 +121,9 @@ var TaskList = React.createClass({
    render: function() {
        var taskNodes = this.props.data.map(function(task) {
            return (
-               <TaskItem key={task.id} project={task.project} description={task.description} from_date={task.from_date} to_date={task.to_date} />
+               <TaskItem key={task.id} id={task.id} project={task.project} description={task.description} from_date={task.from_date} to_date={task.to_date} deleteTask={this.props.deleteTask} />
            )
-       });
+       }.bind(this));
 
        return (
            <div className = "task-list">
@@ -120,6 +134,15 @@ var TaskList = React.createClass({
 });
 
 var TaskItem = React.createClass({
+    getInitialState: function() {
+        return {deleteTask: false};
+    },
+
+    handleDeleteTask: function() {
+        this.setState({deleteTask: true});
+        this.props.deleteTask(this.props.id);
+    },
+
     render: function() {
         return (
             <div className = "task-item">
@@ -135,6 +158,7 @@ var TaskItem = React.createClass({
                         <span className = "task-time-to">{this.props.to_date}</span>
                     </div>
                 </div>
+                <div className = "delete" onClick={this.handleDeleteTask} >x</div>
             </div>
         )
     }

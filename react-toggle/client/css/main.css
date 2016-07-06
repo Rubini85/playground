@@ -34,6 +34,7 @@ body {
     display: flex;
     height: 52px;
     justify-content: space-between;
+    position: relative;
     width: 100%;
 }
 
@@ -106,4 +107,22 @@ body {
 
 .task-time-elapsed {
     font-weight: 600;
+}
+
+.delete {
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    color: #ccc;
+    cursor: pointer;
+    font-weight: bolder;
+    padding: 0 7px 2px;
+    position: absolute;
+    right: -50px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.delete:hover {
+    border: 1px solid red;
+    color: red;
 }
