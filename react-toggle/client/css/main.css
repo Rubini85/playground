@@ -22,9 +22,20 @@ body {
     width: 100%;
 }
 
-.task-form input {
+input {
     border: none;
+}
+
+input:focus {
+    outline: none;
+}
+
+input.task-name {
+    border: none;
+    box-sizing: border-box;
+    font-size: 18px;
     height: 50px;
+    padding: 0 25px;
     width: 100%;
 }
 

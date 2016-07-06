@@ -105,9 +105,9 @@ var TaskForm = React.createClass({
 
        return (
            <form className = "task-form">
-               <input className = "task-name" type="text" value={this.state.description} onChange={this.handleDescriptionChange}></input>
+               <input className = "task-name" type="text" placeholder="What are you working on?" value={this.state.description} onChange={this.handleDescriptionChange}></input>
                <div className = "task-elements">
-                   <input className = "task-project" type="text" value={this.state.project} onChange={this.handleProjectChange}></input>
+                   <input className = "task-project" type="text" placeholder="+ Select project" value={this.state.project} onChange={this.handleProjectChange}></input>
                    <span className = {billableClass} onClick={this.handleBillable}>$</span>
                    <span className = "task-timer">{this.state.seconds} sec</span>
                    <span className = {buttonClass} onClick={this.handleClick}>{buttonText}</span>
