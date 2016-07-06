@@ -74,6 +74,7 @@ body {
 
 .task-timer {
     font-size: 18px;
+    white-space: nowrap;
 }
 
 .task-project {

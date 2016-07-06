@@ -30,14 +30,16 @@ var Reaggle = React.createClass({
 var TaskForm = React.createClass({
     // Setting the initial state: timer is not started
     getInitialState: function() {
-        return {click: false};
+        return {click: false, seconds: 0, timer: null};
     },
 
     handleClick: function() {
         if (this.state.click) {
             this.setState({click: false});
+            clearInterval(this.state.timer);
         } else {
-            this.setState({click: true});
+            var timerID = setInterval(function() {this.setState({seconds: this.state.seconds +1})}.bind(this), 1000);
+            this.setState({click: true, timer: timerID});
         }
     },
 
@@ -46,16 +48,16 @@ var TaskForm = React.createClass({
        var buttonText = "Start";
        if (this.state.click) {
            buttonClass += " is-start";
-           buttonText = "Stop"
+           buttonText = "Stop";
        }
 
        return (
            <form className = "task-form">
-               <input className = "task-name"></input>
+               <input className = "task-name" type="text"></input>
                <div className = "task-elements">
-                   <span className = "task-project">Project</span>
+                   <input className = "task-project" type="text"></input>
                    <span className = "task-billable">$</span>
-                   <span className = "task-timer">Timer</span>
+                   <span className = "task-timer">{this.state.seconds} sec</span>
                    <span className = {buttonClass} onClick={this.handleClick}>{buttonText}</span>
                </div>
            </form>
